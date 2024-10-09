@@ -15,6 +15,9 @@ const config: Config = {
         CGrey:'#94A3B8',
         CBackGroundGrey:'#F8FAFC'
       },
+      boxShadow: {
+        'custom': '0px 0px 8px 0px rgba(59, 130, 246, 0.12)',
+      },
     },
   },
   plugins: [],
