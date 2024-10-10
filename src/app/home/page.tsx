@@ -6,6 +6,10 @@ import TopTitle from "./component/TopTitle";
 import CategoryCard from "./component/CategoryCard";
 import ProductCard from "./component/ProductCard";
 import InstructorCard from "./component/InstructorCard";
+import CarouselReview from "./component/CarouselReview";
+import ButtonCustom from "@/components/Button";
+import { ArrowRight } from "@/svg";
+import Image from "next/image";
 
 const dataCategory = [
   {
@@ -115,6 +119,7 @@ const itemData = {
   rating: 1200,
   start: 4.5,
 };
+
 const Home = () => {
   return (
     <>
@@ -160,17 +165,81 @@ const Home = () => {
             ))}
         </Container>
       </section>
-      <Title ta="center" mt={100}>
-        Welcome to{" "}
-        <Text
-          inherit
-          variant="gradient"
-          component="span"
-          gradient={{ from: "pink", to: "yellow" }}
+      <section className="mt-[60px] h-[512px] bg-[#F8FAFC] py-[80px]">
+        <TopTitle title="What Our Customer Say About Us" link="" />
+        <Container
+          fluid
+          className="lg:mx-[80px] sm:mx-[16px] flex justify-around flex-wrap xl:flex-nowrap gap-4 md:justify-center xl:justify-between"
         >
-          Mantine
-        </Text>
-      </Title>
+          <CarouselReview />
+        </Container>
+      </section>
+
+      <section className="mt-[60px]">
+        <Container
+          fluid
+          className="lg:mx-[80px] sm:mx-[16px] flex items-center justify-center md:justify-between sm:flex-nowrap flex-wrap gap-4 "
+        >
+          <div className="xl:w-2/5 sm:w-1/2 w-4/5">
+            <Image
+              className="w-[400px] h-[425px]"
+              src="https://res.cloudinary.com/dxaqounpg/image/upload/v1728575061/Learing%20Management%20System/banner-instructor-2.png"
+              width={400}
+              height={400}
+              alt="Banner instructor"
+            />
+          </div>
+          <div className="sm:w-2/5 w-4/5">
+            <h4 className="text-black text-[20px] font-[600] leading-[150%]">
+              Become an Instructor
+            </h4>
+            <p className="text-[#1D2939] text-[16px] font-[400] leading-[160%] pt-2 pb-4">
+              Instructors from around the world teach millions of students on
+              Byway. We provide the tools and skills to teach what you love.
+            </p>
+            <ButtonCustom
+              className="rounded-lg"
+              title="Start Your Instructor Journey"
+              p="10px 24px"
+              color="#020617"
+              rightSection={<ArrowRight />}
+            />
+          </div>
+        </Container>
+      </section>
+
+      <section className="my-[60px]">
+        <Container
+          fluid
+          className="lg:mx-[80px] sm:mx-[16px] flex flex-row-reverse items-center justify-center md:justify-between sm:flex-nowrap flex-wrap gap-4 "
+        >
+          <div className="xl:w-2/5 sm:w-1/2 w-4/5">
+            <Image
+              className="w-[400px] h-[425px]"
+              src="https://res.cloudinary.com/dxaqounpg/image/upload/v1728575061/Learing%20Management%20System/banner-instructor-1.png"
+              width={400}
+              height={400}
+              alt="Banner instructor"
+            />
+          </div>
+          <div className="sm:w-2/5 w-4/5">
+            <h4 className="text-black text-[20px] font-[600] leading-[150%]">
+              Become an Instructor
+            </h4>
+            <p className="text-[#1D2939] text-[16px] font-[400] leading-[160%] pt-2 pb-4">
+              Instructors from around the world teach millions of students on
+              Byway. We provide the tools and skills to teach what you love.
+            </p>
+            <ButtonCustom
+              className="rounded-lg"
+              title="Start Your Instructor Journey"
+              p="10px 24px"
+              color="#020617"
+              rightSection={<ArrowRight />}
+            />
+          </div>
+        </Container>
+      </section>
     </>
   );
 };
