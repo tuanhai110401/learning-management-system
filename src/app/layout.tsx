@@ -28,7 +28,7 @@ export default function RootLayout({
           <MantineProvider>
             <HeaderSearch />
             <main>{children}</main>
-            <FooterLinks />
+            {/* <FooterLinks /> */}
           </MantineProvider>
         </ThemeProvider>
       </body>
