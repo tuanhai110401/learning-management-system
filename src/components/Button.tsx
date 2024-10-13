@@ -4,10 +4,15 @@ import React from "react";
 interface ButtonCustomProps extends ButtonProps {
   title: string;
   p?: string;
+  click?: () => void;
 }
-export default function ButtonCustom(prop: ButtonCustomProps) {
+export default function ButtonCustom({ click, ...prop }: ButtonCustomProps) {
   return (
-    <Button style={{ padding: prop.p || "8px", height: "auto" }} {...prop}>
+    <Button
+      style={{ padding: prop.p || "8px", height: "auto" }}
+      {...prop}
+      onClick={click}
+    >
       {prop.title}
     </Button>
   );

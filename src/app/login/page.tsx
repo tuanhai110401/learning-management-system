@@ -4,7 +4,7 @@ import { login, signup } from "./actions";
 import { OAuthButton } from "./oauth-login";
 export default function LoginPage() {
   return (
-    <div className="h-[calc(100vh-65px)] md:bg-red-300 lg:bg-green-300 sm:bg-blue-300 flex flex-row-reverse">
+    <div className="h-[calc(100vh-65px)] justify-center flex flex-row-reverse">
       {/* <form>
         <label htmlFor="email">Email:</label>
         <input id="email" name="email" type="email" required />
@@ -24,27 +24,25 @@ export default function LoginPage() {
         </button>
       </form>
       <OAuthButton /> */}
-      <div className="w-2/5">
+      <div className="w-2/5 hidden sm:block">
         <Image
-          className="w-full h-[calc(100vh-65px)] object-cover sm:hidden"
+          className="w-full h-[calc(100vh-65px)] object-cover"
           src="https://res.cloudinary.com/dxaqounpg/image/upload/v1728753599/Learing%20Management%20System/signin.jpg"
           width={868}
           height={1300}
           alt="banner login"
         />
       </div>
-      <div className="w-[60%] p-[80px] flex flex-col items-center justify-center">
-        <h2 className="text-[#0F172A] text-[32px] font-[600] leading-[130%] mb-6">
-          Sign in to your account
-        </h2>
-        <FormLogin />
-        <div className="flex flex-nowrap justify-center items-center">
-          <div className="flex-1 w-40 h-[1px] bg-[#94A3B8]"></div>
+      <div className="md:w-[60%] w-full p-6 lg:p-20 flex flex-col items-center justify-center">
+        <FormLogin type="login" />
+        <div className="flex flex-nowrap justify-center items-center w-full my-6">
+          <div className="flex-1 h-[1px] bg-[#94A3B8]"></div>
           <span className="text-[14px] mx-[14px] text-[#94A3B8] font-[400] leading-[150%]">
             Sign in with
           </span>
           <div className="flex-1 h-[1px] bg-[#94A3B8]"></div>
         </div>
+        <OAuthButton />
       </div>
     </div>
   );
