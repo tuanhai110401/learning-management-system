@@ -6,25 +6,33 @@ import {
   Container,
   Text,
   Drawer,
+  Button,
 } from "@mantine/core";
-import { useState } from "react";
-const links = [
-  { link: "/about", label: "Features" },
-  { link: "/pricing", label: "Pricing" },
-  { link: "/learn", label: "Learn" },
-  { link: "/community", label: "Community" },
-];
+import { useState, useEffect } from "react";
+import { useAuthStore } from "@/lib/store";
+import { ShoppingCart, Search } from "@/svg";
+import { NavItem } from "./NavItems";
 
-export function HeaderSearch() {
+// const links = [
+//   { link: "/about", label: "Categories" },
+//   { link: "/pricing", label: "ShoppingCart", icon: <ShoppingCart /> },
+// ];
+
+export function HeaderSearch({ isLogin }: { isLogin: boolean }) {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const items = links.map((link) => (
-    <a key={link.label} href={link.link}>
-      {link.label}
-    </a>
-  ));
+  const { isLogin: isLoginStore, setLogin, clearAuth } = useAuthStore();
+  useEffect(() => {
+    isLogin ? setLogin() : clearAuth();
+  }, [isLogin]);
+  // const items = links.map((link) => (
+  //   <a key={link.label} href="{link.link}">
+  //     {link.icon ? link.icon : link.label}
+  //   </a>
+  // ));
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
   };
+
   return (
     <header className="w-full">
       <Container
@@ -47,7 +55,7 @@ export function HeaderSearch() {
           <Autocomplete
             className="md:w-60 lg:w-90"
             placeholder="Search"
-            // leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+            leftSection={<Search />}
             data={[]}
             // visibleFrom="sm"
           />
@@ -63,13 +71,14 @@ export function HeaderSearch() {
             opened={isOpenMenu}
             onClose={toggleMenu}
             closeButtonProps={{
-              icon: <Burger opened={true} />,
+              icon: <Burger opened={true} className="mr-10" />,
             }}
           >
-            <Group className="flex-col flex-nowrap ml-2 lg:ml-4">{items}</Group>
+            <NavItem styleNav="flex flex-col gap-6" />
+            {/* <Group className="flex-col flex-nowrap ml-2 lg:ml-4">{items}</Group> */}
           </Drawer>
-          <Group className="flex-nowrap ml-2 lg:ml-4" visibleFrom="xs">
-            {items}
+          <Group className="ml-2 lg:ml-4" visibleFrom="xs">
+            <NavItem />
           </Group>
         </Group>
       </Container>

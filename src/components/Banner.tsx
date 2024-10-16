@@ -44,7 +44,6 @@ const imageList = [
 ];
 function CarouselBanner() {
   const autoplay = useRef(Autoplay({ delay: 5000 }));
-  console.log(autoplay.current);
   const imageCarousel = imageList.map((image, index) => (
     <Image
       className="w-[100%] h-[100%] sm:w-[80%] md:w-full md:h-[400px] lg:h-[500px] object-cover"

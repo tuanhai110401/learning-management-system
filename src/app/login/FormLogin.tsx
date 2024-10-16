@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight } from "@/svg";
 import ButtonCustom from "@/components/Button";
+import { login, signup } from "./actions";
+// import { getCookie } from "@/utils/cookies";
 
 interface LoginFormInputs {
   email: string;
@@ -14,33 +16,35 @@ interface LoginFormInputs {
 const loginSchema = z.object({
   email: z.string().email("Email must be a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters "),
-  confirmPassword: z.string().refine((val, ctx) => {
-    if (val !== ctx.parent.password) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Mật khẩu xác nhận không khớp",
-      });
-    }
-    return true;
-  }),
+  confirmPassword: z.string(),
 });
 export default function FormLogin({ type }: { type: string }) {
   const [isLogin, setIsLogin] = useState(true);
   const {
     register,
-    handleSubmit,
     getValues,
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema) });
 
-  const handleSubmitForm = (value: LoginFormInputs) => {
-    console.log(value);
+  const handleSubmitFormLogin = () => {
+    const value = getValues();
+    const formData = new FormData();
+    formData.append("email", value.email);
+    formData.append("password", value.password);
+    if (isLogin) {
+      login(formData);
+    } else {
+      signup(formData);
+    }
   };
-  const newHandle = handleSubmit(handleSubmitForm);
+  // const valueCookie: any = getCookie("access_token");
+  // console.log(valueCookie);
+
   return (
     <>
       <h2 className="text-[#0F172A] text-[32px] font-[600] leading-[130%] mb-6">
-        {isLogin ? "Sign in to your account" : "Create Your Account"}
+        {isLogin ? "Sign in to your account" : "Create Your Account"}{" "}
+        {/* {valueCookie} */}
       </h2>
       <form className="w-full select-none">
         <div className="w-full mb-6">
@@ -102,7 +106,7 @@ export default function FormLogin({ type }: { type: string }) {
           title={isLogin ? "Sign In" : "Sign Up"}
           p="10px 24px"
           rightSection={<ArrowRight />}
-          click={newHandle}
+          click={handleSubmitFormLogin}
         />
       </form>
       <h3 className="text-gray-500 py-2">

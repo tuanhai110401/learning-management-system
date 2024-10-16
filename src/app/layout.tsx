@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "../context/ThemeContext";
 import { HeaderSearch } from "@/components/Header";
 import { FooterLinks } from "@/components/Footer";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,9 @@ export default function RootLayout({
 }>) {
   // const context = useContext(ThemeContext);
   // console.log(context);
+
+  const cookieStore = cookies();
+  const isLogin = cookieStore.get("isLogin");
   return (
     <html lang="en">
       <head>
@@ -26,7 +30,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <MantineProvider>
-            <HeaderSearch />
+            <HeaderSearch isLogin={isLogin?.value ? true : false} />
             <main>{children}</main>
             {/* <FooterLinks /> */}
           </MantineProvider>

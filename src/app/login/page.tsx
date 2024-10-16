@@ -1,29 +1,9 @@
 import Image from "next/image";
 import FormLogin from "./FormLogin";
-import { login, signup } from "./actions";
 import { OAuthButton } from "./oauth-login";
 export default function LoginPage() {
   return (
     <div className="h-[calc(100vh-65px)] justify-center flex flex-row-reverse">
-      {/* <form>
-        <label htmlFor="email">Email:</label>
-        <input id="email" name="email" type="email" required />
-        <label htmlFor="password">Password:</label>
-        <input id="password" name="password" type="password" required />
-        <button
-          formAction={login}
-          className="bg-green-400 p-2 rounded-[8px] ml-2"
-        >
-          Log in
-        </button>
-        <button
-          formAction={signup}
-          className="bg-red-400 p-2 rounded-[8px] ml-2"
-        >
-          Sign up
-        </button>
-      </form>
-      <OAuthButton /> */}
       <div className="w-2/5 hidden sm:block">
         <Image
           className="w-full h-[calc(100vh-65px)] object-cover"

@@ -4,12 +4,21 @@ import { Provider } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
+import { setCookie } from '@/utils/cookies';
+import { cookies } from 'next/headers'
+
+
+const setCookieAuth = (name: string, value: string) => {
+  cookies().set({
+    name: name,
+    value: value,
+    httpOnly: true,
+    path: '/',
+  })
+}
 
 export async function login(formData: FormData) {
   const supabase = createClient()
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
   const dataLogin = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -17,13 +26,13 @@ export async function login(formData: FormData) {
 
   const { error, data } = await supabase.auth.signInWithPassword(dataLogin)
   console.log(error?.message);
-  console.log(data.session);
-  console.log(data.session);
-
   if (error) {
     redirect('/error')
   }
-
+  console.log(data.session.access_token);
+  setCookieAuth('access_token', data.session.access_token);
+  setCookieAuth('refresh_token', data.session.refresh_token);
+  setCookieAuth('isLogin', '1');
   revalidatePath('/', 'layout')
   redirect('/account')
 
@@ -31,19 +40,21 @@ export async function login(formData: FormData) {
 
 export async function signup(formData: FormData) {
   const supabase = createClient()
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
+  const dataSignUp = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signUp(data)
-
-  console.log(formData);
+  const { error, data } = await supabase.auth.signUp(dataSignUp)
   console.log(error?.message);
+  console.log(data);
   if (error) {
     redirect('/error')
+  }
+  if (data && data.session) {
+    setCookieAuth('access_token', data.session.access_token);
+    setCookieAuth('refresh_token', data.session.refresh_token);
+    setCookieAuth('isLogin', '1');
   }
 
   revalidatePath('/', 'layout')
@@ -67,7 +78,7 @@ export async function loginGoogleAccount(provider: Provider) {
     return { error };
   }
   console.log(data.url);
-  // return { url: data.url };
+  console.log(data);
   redirect(data.url)
 
 }

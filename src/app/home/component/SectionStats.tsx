@@ -26,9 +26,8 @@ export default function SectionStats() {
       className="bg-[#F8FAFC] my-[60px] flex flex-wrap justify-between sm:px-[16px] xl:px-[80px] py-[40px]"
     >
       {dataStats.map((item, index) => (
-        <>
+        <div key={index} className="">
           <Group
-            key={index}
             justify="center"
             className="flex-col w-full md:w-auto gap-2 lg:gap-0 "
           >
@@ -40,7 +39,7 @@ export default function SectionStats() {
             </p>
           </Group>
           <span className=" mx-auto my-4 h-[4px] w-[180px] bg-[#E2E8F0] md:h-[55px] md:w-[4px]"></span>
-        </>
+        </div>
       ))}
     </Container>
   );
