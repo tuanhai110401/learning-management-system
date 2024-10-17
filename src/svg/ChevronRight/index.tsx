@@ -1,14 +1,15 @@
-export default function ArrowRight() {
+export default function ChevronRight() {
   return (
     <svg
+      style={{ transform: "rotate(270deg)" }}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
-      height="25"
-      viewBox="0 0 24 25"
+      height="24"
+      viewBox="0 0 24 24"
       fill="none"
     >
       <path
-        d="M4 12.5H20M20 12.5L14 6.5M20 12.5L14 18.5"
+        d="M6 9L12 15L18 9"
         stroke="#0F172A"
         strokeWidth="2"
         strokeLinecap="round"
