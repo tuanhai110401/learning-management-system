@@ -9,7 +9,6 @@ import {
   Button,
 } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { useAuthStore } from "@/lib/store";
 import { ShoppingCart, Search } from "@/svg";
 import { NavItem } from "./NavItems";
 
@@ -20,15 +19,6 @@ import { NavItem } from "./NavItems";
 
 export function HeaderSearch({ isLogin }: { isLogin: boolean }) {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const { isLogin: isLoginStore, setLogin, clearAuth } = useAuthStore();
-  useEffect(() => {
-    isLogin ? setLogin() : clearAuth();
-  }, [isLogin]);
-  // const items = links.map((link) => (
-  //   <a key={link.label} href="{link.link}">
-  //     {link.icon ? link.icon : link.label}
-  //   </a>
-  // ));
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
   };

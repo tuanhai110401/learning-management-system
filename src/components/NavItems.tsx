@@ -1,13 +1,12 @@
 import { ShoppingCart, BellIcon } from "@/svg";
 import { Avatar, Group } from "@mantine/core";
-import { useAuthStore } from "@/lib/store";
 
 const links = [
   { link: "/about", label: "Categories" },
   { link: "/pricing", label: "ShoppingCart", icon: <ShoppingCart /> },
 ];
 export const NavItem = ({ styleNav }: { styleNav?: string }) => {
-  const { isLogin } = useAuthStore();
+  const isLogin = false;
   const items = links.map((link) => (
     <a key={link.label} href="{link.link}">
       {link.icon ? link.icon : link.label}

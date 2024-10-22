@@ -32,7 +32,7 @@ export default function RootLayout({
           <MantineProvider>
             <HeaderSearch isLogin={isLogin?.value ? true : false} />
             <main>{children}</main>
-            {/* <FooterLinks /> */}
+            <FooterLinks />
           </MantineProvider>
         </ThemeProvider>
       </body>

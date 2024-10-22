@@ -4,12 +4,13 @@ import React from "react";
 interface ButtonCustomProps extends ButtonProps {
   title: string;
   p?: string;
+  height?: string;
   click?: () => void;
 }
 export default function ButtonCustom({ click, ...prop }: ButtonCustomProps) {
   return (
     <Button
-      style={{ padding: prop.p || "8px", height: "auto" }}
+      style={{ padding: prop.p || "8px", height: prop.height || "auto" }}
       {...prop}
       onClick={click}
     >

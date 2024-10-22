@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { type User } from "@supabase/supabase-js";
-import { useAuthStore } from "@/lib/store";
 // ...
 
 export default function AccountForm({ user }: { user: User | null }) {
@@ -12,7 +11,7 @@ export default function AccountForm({ user }: { user: User | null }) {
   const [username, setUsername] = useState<string | null>(null);
   const [website, setWebsite] = useState<string | null>(null);
   const [avatar_url, setAvatarUrl] = useState<string | null>(null);
-  const { isLogin } = useAuthStore();
+  const isLogin = false;
   const getProfile = useCallback(async () => {
     try {
       setLoading(true);

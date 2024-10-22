@@ -8,7 +8,7 @@ interface ProductProp {
   image: string;
   author: string;
   rating?: number;
-  start?: number;
+  star?: number;
 }
 
 interface ProductCardProps {
@@ -34,7 +34,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <p className="text-[#334155] text-[14px] font-[400] leading-[150%]">{`By ${product.author}`}</p>
         <div className="flex flex-nowrap gap-2">
           <Rating
-            value={product.start}
+            value={product.star}
             size="md"
             color="#EAB308"
             fractions={4}
@@ -45,7 +45,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         <p className="text-[#334155] text-[14px] font-[400] leading-[150%]">
           {product.description}
         </p>
-        <span className="text-[#0F172A] text-[20px] font-[600] leading-[150%]">{`$${product.price}`}</span>
+        {product.price > 0 ? (
+          <span className="text-[#0F172A] text-[20px] font-[600] leading-[150%]">{`$${product.price}`}</span>
+        ) : (
+          <span className="text-green-500 text-[20px] font-[600] leading-[150%]">
+            Free
+          </span>
+        )}
       </div>
     </div>
   );
