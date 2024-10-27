@@ -1,8 +1,9 @@
 import React from "react";
 
-export default function Play() {
+export default function Play({ color }: { color?: string }) {
   return (
     <svg
+      style={{ fill: color }}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"

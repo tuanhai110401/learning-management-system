@@ -6,23 +6,40 @@ import {
   Container,
   Text,
   Drawer,
-  Button,
 } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { ShoppingCart, Search } from "@/svg";
 import { NavItem } from "./NavItems";
-
+import { useAuthStore } from "@/lib/store";
 // const links = [
 //   { link: "/about", label: "Categories" },
 //   { link: "/pricing", label: "ShoppingCart", icon: <ShoppingCart /> },
 // ];
 
-export function HeaderSearch({ isLogin }: { isLogin: boolean }) {
+export function HeaderSearch() {
+  const { isLogin, setLogin, clearAuth } = useAuthStore();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
   };
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch("/auth/checkAuth");
+        const data = await res.json();
+        data.isLoggedIn ? setLogin() : clearAuth();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
+    checkAuthStatus();
+  }, [isLogin]);
   return (
     <header className="w-full">
       <Container
@@ -47,7 +64,6 @@ export function HeaderSearch({ isLogin }: { isLogin: boolean }) {
             placeholder="Search"
             leftSection={<Search />}
             data={[]}
-            // visibleFrom="sm"
           />
           <Burger
             opened={isOpenMenu}

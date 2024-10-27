@@ -21,7 +21,10 @@ export default function CustomBreadcrumbs() {
               {item.title}
             </Link>
           ) : (
-            <p className="text-[#2563EB] text-[14px] leading-[150%] cursor-pointer ">
+            <p
+              key={`current${index}`}
+              className="text-[#2563EB] text-[14px] leading-[150%] cursor-pointer "
+            >
               {item.title}
             </p>
           )

@@ -1,12 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight } from "@/svg";
 import ButtonCustom from "@/components/Button";
-import { login, signup } from "./actions";
-// import { getCookie } from "@/utils/cookies";
 
 interface LoginFormInputs {
   email: string;
@@ -18,7 +16,7 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters "),
   confirmPassword: z.string(),
 });
-export default function FormLogin({ type }: { type: string }) {
+export default function FormLogin() {
   const [isLogin, setIsLogin] = useState(true);
   const {
     register,
@@ -26,25 +24,36 @@ export default function FormLogin({ type }: { type: string }) {
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema) });
 
-  const handleSubmitFormLogin = () => {
+  const handleSubmit = async () => {
     const value = getValues();
-    const formData = new FormData();
-    formData.append("email", value.email);
-    formData.append("password", value.password);
-    if (isLogin) {
-      login(formData);
-    } else {
-      signup(formData);
+    try {
+      const response = await fetch(`/auth/${isLogin ? "sign-in" : "sign-up"}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          email: value.email,
+          password: value.password,
+        }),
+      });
+      // const responseData = await response.json();
+      if (response) {
+        // window.location.href = responseData.redirectUrl;
+        // window.location.href = "/";
+        console.log("is login successful", response);
+      } else {
+        console.error("Login failed:", response);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
-  // const valueCookie: any = getCookie("access_token");
-  // console.log(valueCookie);
 
   return (
     <>
       <h2 className="text-[#0F172A] text-[32px] font-[600] leading-[130%] mb-6">
         {isLogin ? "Sign in to your account" : "Create Your Account"}{" "}
-        {/* {valueCookie} */}
       </h2>
       <form className="w-full select-none">
         <div className="w-full mb-6">
@@ -106,7 +115,7 @@ export default function FormLogin({ type }: { type: string }) {
           title={isLogin ? "Sign In" : "Sign Up"}
           p="10px 24px"
           rightSection={<ArrowRight />}
-          click={handleSubmitFormLogin}
+          click={handleSubmit}
         />
       </form>
       <h3 className="text-gray-500 py-2">

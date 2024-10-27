@@ -3,6 +3,7 @@ import { CardUser, UserButton } from "@/components/UserButton";
 import { Container, Divider, Rating } from "@mantine/core";
 import React from "react";
 import AsideCourse from "../component/AsideCourse";
+import Syllabus from "@/components/Syllabus";
 
 export default function page() {
   return (
@@ -80,6 +81,120 @@ export default function page() {
           <CardUser />
         </div>
       </Container>
+      <Container fluid className="lg:mx-[80px] sm:mx-[16px] bg-white">
+        <div className="mt-8">
+          <h4 className="text-[20px] text-[#0F172A] font-[600] leading-[150%] my-4">
+            Syllabus
+          </h4>
+          <Syllabus />
+        </div>
+      </Container>
+      <Container fluid className="lg:mx-[80px] sm:mx-6 bg-white">
+        <div className="mt-8">
+          <h4 className="my-4">Learner Reviews</h4>
+          <div>
+            <div className="flex gap-2">
+              <div className="flex-none lg:w-52 w-32">
+                <div className="flex gap-1 mb-6 items-end">
+                  <div className="flex">
+                    <Rating value={1} readOnly count={1} />
+                    <span className="text-[#0F172A] text-[20px] font-[600] leading-[140%]">
+                      4.6
+                    </span>
+                  </div>
+                  <span className="whitespace-nowrap text-[#334155] text-[14px] font-[500] leading-[20px]">
+                    130 Reviews
+                  </span>
+                </div>
+                <div>
+                  <RatingComponent />
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col lg:flex-row items-center p-4">
+                  <div className="flex-none w-60">
+                    <UserButton />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <Rating value={1} readOnly count={1} /> <span>5</span>
+                      <span className="whitespace-nowrap text-[#334155] text-[14px] font-[500] leading-[20px]">
+                        Reviewed on 22nd March, 2024
+                      </span>
+                    </div>
+                    <p>
+                      I was initially apprehensive, having no prior design
+                      experience. But the instructor, John Doe, did an amazing
+                      job of breaking down complex concepts into easily
+                      digestible modules. The video lectures were engaging, and
+                      the real-world examples really helped solidify my
+                      understanding.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row items-center p-4">
+                  <div className="flex-none w-60">
+                    <UserButton />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <Rating value={1} readOnly count={1} /> <span>5</span>
+                      <span className="whitespace-nowrap text-[#334155] text-[14px] font-[500] leading-[20px]">
+                        Reviewed on 22nd March, 2024
+                      </span>
+                    </div>
+                    <p>
+                      I was initially apprehensive, having no prior design
+                      experience. But the instructor, John Doe, did an amazing
+                      job of breaking down complex concepts into easily
+                      digestible modules. The video lectures were engaging, and
+                      the real-world examples really helped solidify my
+                      understanding.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row items-center p-4">
+                  <div className="flex-none w-60">
+                    <UserButton />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <Rating value={1} readOnly count={1} /> <span>5</span>
+                      <span className="whitespace-nowrap text-[#334155] text-[14px] font-[500] leading-[20px]">
+                        Reviewed on 22nd March, 2024
+                      </span>
+                    </div>
+                    <p>
+                      I was initially apprehensive, having no prior design
+                      experience. But the instructor, John Doe, did an amazing
+                      job of breaking down complex concepts into easily
+                      digestible modules. The video lectures were engaging, and
+                      the real-world examples really helped solidify my
+                      understanding.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
     </>
   );
 }
+
+const RatingComponent = () => {
+  const dataRating = [5, 4, 3, 2, 1];
+  return (
+    <div className="flex flex-col gap-1">
+      {dataRating.map((rating) => (
+        <div key={rating} className="flex gap-2">
+          <Rating value={rating} readOnly />
+          <span className="whitespace-nowrap text-[#334155] text-[14px] font-[500] leading-[20px]">
+            {rating}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};

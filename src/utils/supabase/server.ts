@@ -1,6 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+
+
 export function createClient() {
   const cookieStore = cookies()
 
@@ -28,4 +30,16 @@ export function createClient() {
       },
     }
   )
+}
+
+
+import { createClient as createC } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
+
+export const createRouteHandlerClient = (): SupabaseClient => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  return createC(supabaseUrl, supabaseKey);
+
 }
