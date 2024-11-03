@@ -9,11 +9,10 @@ export const GET = async (req: Request) => {
     // const supabase = createRouteHandlerClient();
     // const data = await supabase.auth.getSession();
     const supabase = createServerComponentClient({ cookies });
-    const { data } = await supabase.auth.getUser()
+    const { data, error } = await supabase.auth.getUser()
 
-    if (data.user) {
-        return NextResponse.json({ isLoggedIn: true, user: data });
-    } else {
-        return NextResponse.json({ isLoggedIn: false, data: data });
+    if (data.user !== null) {
+        return NextResponse.json({ isLoggedIn: true, user: data.user });
     }
+    return NextResponse.json({ isLoggedIn: false, data: data });
 };

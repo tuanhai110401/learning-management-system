@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight } from "@/svg";
 import ButtonCustom from "@/components/Button";
+import { useSearchParams } from "next/navigation";
 
 interface LoginFormInputs {
   email: string;
@@ -49,7 +50,11 @@ export default function FormLogin() {
       console.log(err);
     }
   };
-
+  const searchParam = useSearchParams();
+  const type = searchParam.get("type");
+  useEffect(() => {
+    type === "signup" ? setIsLogin(false) : setIsLogin(true);
+  }, [type]);
   return (
     <>
       <h2 className="text-[#0F172A] text-[32px] font-[600] leading-[130%] mb-6">

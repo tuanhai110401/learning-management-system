@@ -15,13 +15,13 @@ interface ProductCardProps {
   product: ProductProp;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product }: any) {
   return (
     <div className="w-[298px] p-4 flex flex-col justify-center items-center gap-2 cursor-pointer rounded-[16px] border-[1] border-[#E2E8F0] shadow-custom transform transition-transform duration-100 hover:scale-105">
       <div>
         <Image
           className="rounded-lg"
-          src="https://res.cloudinary.com/dxaqounpg/image/upload/v1728456358/Learing%20Management%20System/product-1.jpg"
+          src={product.image}
           width={266}
           height={139}
           alt="Product course"
@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <h2 className="text-[#0F172A] text-[16px] font-[600] leading-[160%]">
           {product.title}
         </h2>
-        <p className="text-[#334155] text-[14px] font-[400] leading-[150%]">{`By ${product.author}`}</p>
+        <p className="text-[#334155] text-[14px] font-[400] leading-[150%]">{`By ${product.instructor_name}`}</p>
         <div className="flex flex-nowrap gap-2">
           <Rating
             value={product.star}

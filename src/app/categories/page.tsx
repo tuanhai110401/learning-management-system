@@ -3,8 +3,6 @@ import Filter from "./components/FilterPage";
 import { supabase } from "@/utils/supabase/createSupabase";
 // export default async function Categories() {
 const Categories = async () => {
-  const { data: categories } = await supabase.from("categories").select("*");
-  console.log(categories);
   return (
     <div className="mt-[60px]">
       <Container fluid className="lg:mx-[80px] sm:mx-[16px]">

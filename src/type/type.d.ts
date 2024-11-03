@@ -15,3 +15,19 @@ interface FilterState {
     setRating: (newRating: number) => void;
     setCategories: (newCategories: string) => void;
 }
+
+
+interface ICourse {
+    category_name: string
+    comment: any
+    created_at: string
+    description: string
+    id: number
+    image: string
+    instructor_name: string
+    price: number
+    rating: number
+    star: number
+    title: string
+    updated_at: string
+}

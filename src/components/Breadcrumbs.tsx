@@ -2,12 +2,20 @@ import { Breadcrumbs, Anchor } from "@mantine/core";
 import { ChevronRight } from "@/svg";
 import Link from "next/link";
 
-const itemsPage = [
-  { title: "Home", href: "/" },
-  { title: "Categories", href: "/categories" },
-  { title: "Learn HTML CSS", href: "#", isPage: true },
-];
-export default function CustomBreadcrumbs() {
+export default function CustomBreadcrumbs({
+  courseName,
+}: {
+  courseName?: string;
+}) {
+  const itemsPage = [
+    { title: "Home", href: "/" },
+    { title: "Categories", href: "/categories" },
+    {
+      title: courseName ? courseName : "Learn HTML CSS",
+      href: "#",
+      isPage: true,
+    },
+  ];
   return (
     <>
       <Breadcrumbs separator={<ChevronRight />} mt="lg">

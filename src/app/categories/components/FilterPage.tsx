@@ -13,8 +13,9 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { FilterOption } from "./FilterOption";
 import ProductCard from "@/app/home/component/ProductCard";
-import { getCourses } from "@/utils/supabase/handlers/courses";
+import { getCoursesAll } from "@/utils/supabase/handlers/courses";
 import { useFilterStore } from "@/lib/store";
+import { useRouter } from "next/navigation";
 
 export default function Filter() {
   const [isOpenFilter, setIsOpenFilter] = useState<boolean>(true);
@@ -26,6 +27,7 @@ export default function Filter() {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [opened, { open, close }] = useDisclosure(false);
   const dataFilter = useFilterStore();
+  const router = useRouter();
   const { price, rating, categories } = useFilterStore();
   useEffect(() => {
     const filter: FilterOptions = {
@@ -36,7 +38,7 @@ export default function Filter() {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
-        const dataCourse = await getCourses(filter, pageNumber);
+        const dataCourse = await getCoursesAll(filter, pageNumber);
         setDataCourse(dataCourse.data);
         setTotalPage(dataCourse.count);
       } catch (error) {
@@ -47,6 +49,9 @@ export default function Filter() {
     };
     fetchCategories();
   }, [price, rating, categories, pageNumber]); //
+  const handleOnclick = (id: string) => {
+    router.push(`/course/${id}`);
+  };
   return (
     <Container fluid className="lg:mx-[80px] sm:mx-[16px]">
       <div className="flex justify-between items-end my-6 ml-auto">
@@ -85,7 +90,9 @@ export default function Filter() {
               </div>
             ) : dataCourse?.length !== 0 ? (
               dataCourse?.map((item) => (
-                <ProductCard key={item.id} product={item} />
+                <div key={item.id} onClick={() => handleOnclick(item.id)}>
+                  <ProductCard product={item} />
+                </div>
               ))
             ) : (
               <div>
