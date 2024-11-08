@@ -1,9 +1,9 @@
 import ButtonCustom from "@/components/Button";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore, useCart } from "@/lib/store";
 import { toast } from "react-toastify";
-
+import { usePurchase } from "@/lib/store";
 export default function AsideCourse({
   image,
   price,
@@ -14,17 +14,39 @@ export default function AsideCourse({
   courseId: string;
 }) {
   const { isLoading, addCart } = useCart();
-  const { userId } = useAuthStore();
-
+  const { userId, isLogin } = useAuthStore();
+  const { purchase } = usePurchase();
+  const [checkPurchase, setCheckPurchase] = useState(false);
   const handleClick = () => {
-    if (!userId && !courseId) return;
+    if (isLogin !== false || !courseId || !userId) {
+      toast.warning("You must be logged in to access your cart.");
+      return;
+    }
     try {
       addCart(courseId, userId);
       toast.success("Course added to cart!");
-    } catch (error) {
-      console.log(">> error");
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
+  const handlePurchase = () => {
+    console.log(courseId, userId, checkPurchase);
+  };
+  useEffect(() => {
+    if (!userId || !courseId) return;
+    console.log(">>");
+    const hasPurchased = (courseId: any, userId: any) => {
+      const check = purchase.filter((item: any) => {
+        return (
+          item.course_id.toString() === courseId && item.user_id === userId
+        );
+      });
+      console.log(check);
+      if (check.length > 0) return setCheckPurchase(true);
+      else return setCheckPurchase(false);
+    };
+    hasPurchased(courseId, userId);
+  }, [userId, courseId]);
   return (
     <div className="w-full shadow-custom rounded-2xl p-6 flex flex-col gap-6 bg-white">
       <div>
@@ -56,32 +78,46 @@ export default function AsideCourse({
           </span>
         </div>
       )}
-
-      <ButtonCustom
-        p="10px 24px"
-        height="48px"
-        title="Add to card"
-        color="#020617"
-        loading={isLoading}
-        click={handleClick}
-      />
-      {price === 0 ? (
-        <ButtonCustom
-          p="10px 24px"
-          height="48px"
-          variant="outline"
-          title="Register to Receive the Course"
-          color="#22C55E"
-        />
-      ) : (
-        <ButtonCustom
-          p="10px 24px"
-          height="48px"
-          variant="outline"
-          title="Buy Now"
-          color="#020617"
-          click={() => toast("is running !")}
-        />
+      {!checkPurchase && (
+        <div className="flex flex-col gap-4">
+          <ButtonCustom
+            p="10px 24px"
+            height="48px"
+            title="Add to card"
+            color="#020617"
+            loading={isLoading}
+            click={handleClick}
+          />
+          {price === 0 ? (
+            <ButtonCustom
+              p="10px 24px"
+              height="48px"
+              variant="outline"
+              title="Register to Receive the Course"
+              color="#22C55E"
+            />
+          ) : (
+            <ButtonCustom
+              p="10px 24px"
+              height="48px"
+              variant="outline"
+              title="Buy Now"
+              color="#020617"
+              click={handlePurchase}
+            />
+          )}
+        </div>
+      )}
+      {checkPurchase && (
+        <div className="flex flex-col gap-4">
+          <ButtonCustom
+            p="10px 24px"
+            height="48px"
+            variant="outline"
+            title="Go to Course Details"
+            color="#22C55E"
+          />
+        </div>
       )}
     </div>
   );

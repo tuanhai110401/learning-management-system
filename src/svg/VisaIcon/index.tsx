@@ -4,8 +4,8 @@ export default function VisaIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="2500"
-      height="2500"
+      width="48"
+      height="48"
       viewBox="0 0 141.732 141.732"
       id="visa"
     >

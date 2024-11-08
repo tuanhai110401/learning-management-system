@@ -7,7 +7,7 @@ import AsideCourse from "../component/AsideCourse";
 import Syllabus from "@/components/Syllabus";
 import { useParams } from "next/navigation";
 import { getChapters, getCourse } from "@/utils/supabase/handlers/courses";
-import { useAuthStore } from "@/lib/store";
+import { useAuthStore, usePurchase } from "@/lib/store";
 
 export default function page() {
   const { id } = useParams();
@@ -15,6 +15,7 @@ export default function page() {
   const [dataCourse, setDataCourse] = useState<ICourse | null>(null);
   const [dataChapters, setDataChapters] = useState<string[] | null>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { purchase } = usePurchase();
   useEffect(() => {
     const fetchChapters = async () => {
       try {

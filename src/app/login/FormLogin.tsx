@@ -6,6 +6,9 @@ import { z } from "zod";
 import { ArrowRight } from "@/svg";
 import ButtonCustom from "@/components/Button";
 import { useSearchParams } from "next/navigation";
+import { useAuthStore, useCart, usePurchase } from "@/lib/store";
+import { toast } from "react-toastify";
+import { useCheckAuth } from "@/utils/supabase/handlers/userInfo";
 
 interface LoginFormInputs {
   email: string;
@@ -20,11 +23,20 @@ const loginSchema = z.object({
 export default function FormLogin() {
   const [isLogin, setIsLogin] = useState(true);
   const {
+    isLogin: login,
+    userId,
+    setUserId,
+    setLogin,
+    clearAuth,
+  } = useAuthStore();
+  const { cart } = useCart();
+  const { purchase } = usePurchase();
+  const {
     register,
     getValues,
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema) });
-
+  const { setStore } = useCheckAuth();
   const handleSubmit = async () => {
     const value = getValues();
     try {
@@ -42,6 +54,8 @@ export default function FormLogin() {
       if (response) {
         // window.location.href = responseData.redirectUrl;
         // window.location.href = "/";
+        // checkAuthStatus();
+        setStore();
         console.log("is login successful", response);
       } else {
         console.error("Login failed:", response);
@@ -55,6 +69,28 @@ export default function FormLogin() {
   useEffect(() => {
     type === "signup" ? setIsLogin(false) : setIsLogin(true);
   }, [type]);
+  const checkAuthStatus = async () => {
+    try {
+      const res = await fetch("/auth/checkAuth");
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.infoUser);
+        if (data.isLoggedIn) {
+          setUserId(data.user.id);
+          setLogin();
+        } else {
+          clearAuth();
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+    }
+  };
+  const handleTest = () => {
+    console.log(">>cart", cart);
+    console.log(">>purchase", purchase);
+  };
   return (
     <>
       <h2 className="text-[#0F172A] text-[32px] font-[600] leading-[130%] mb-6">
@@ -65,6 +101,7 @@ export default function FormLogin() {
           <label
             className="text-[#0F172A] text-[18px] font-[600] leading-[160%] block"
             htmlFor="email"
+            onClick={handleTest}
           >
             Email
           </label>

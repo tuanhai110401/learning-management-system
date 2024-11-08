@@ -11,33 +11,19 @@ import {
 import { useState, useEffect } from "react";
 import { Search } from "@/svg";
 import { NavItem } from "./NavItems";
-import { useAuthStore } from "@/lib/store";
+import { useAuthStore, useCart } from "@/lib/store";
+import Link from "next/link";
+import { toast } from "react-toastify";
+import { useCheckAuth } from "@/utils/supabase/handlers/userInfo";
 
 export function HeaderSearch() {
   const { isLogin, userId, setUserId, setLogin, clearAuth } = useAuthStore();
+  const { cart } = useCart();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
   };
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const res = await fetch("/auth/checkAuth");
-        if (res.ok) {
-          const data = await res.json();
-          setUserId(data.user.id);
-          data.isLoggedIn ? setLogin() : clearAuth();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuthStatus();
-  }, []);
   return (
     <header className="w-full">
       <Container
@@ -53,7 +39,7 @@ export function HeaderSearch() {
             gradient={{ from: "pink", to: "yellow" }}
             onClick={() => console.log(userId)}
           >
-            Mantine
+            <Link href="/">Mantine</Link>
           </Text>
         </Group>
 

@@ -5,14 +5,18 @@ import React, { useEffect } from "react";
 import { useAuthStore, useCart } from "@/lib/store";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useCheckAuth } from "@/utils/supabase/handlers/userInfo";
 
 export default function Cart() {
-  const { userId } = useAuthStore();
+  const { userId, isLogin } = useAuthStore();
   const { isLoading, cart, removeCart, fetchCart } = useCart();
+  const router = useRouter();
+  const { setStore } = useCheckAuth();
   useEffect(() => {
-    if (!userId) return;
-    fetchCart(userId);
-  }, [userId]);
+    if (isLogin) return;
+    setStore();
+  }, []);
   const handleRemoveCart = (cartId: string) => {
     removeCart(cartId);
     toast.success("Course remove from cart!");
@@ -24,7 +28,7 @@ export default function Cart() {
           <Indicator
             size={22}
             inline
-            label={cart.length}
+            label={cart.length || "0"}
             color="red"
             processing
           >
@@ -43,12 +47,24 @@ export default function Cart() {
             <h4 className="text-black text-[18px] font-[600] leading-[160%] py-2">
               Shopping Cart
             </h4>
-            {cart.length === 0 && (
+            {cart && cart.length === 0 && (
               <div>
-                <h1>Your cart is empty. Add some items to get started!</h1>
+                {isLogin ? (
+                  <h1>Your cart is empty. Add some items to get started!</h1>
+                ) : (
+                  <h4>
+                    You must be logged in to access your cart. Click here to{" "}
+                    <span
+                      onClick={() => router.push("/login")}
+                      className="text-blue-600 cursor-pointer py-2 hover:underline"
+                    >
+                      Log in.
+                    </span>
+                  </h4>
+                )}
               </div>
             )}
-            {isLoading === false &&
+            {(isLoading === false &&
               cart &&
               cart.length > 0 &&
               cart.map((item: any, index: any) => (
@@ -61,16 +77,16 @@ export default function Cart() {
                       className="w-[94px] h-[54] object-cover"
                       height={2000}
                       width={2000}
-                      src={item.courses?.image}
+                      src={item?.courses?.image ? item?.courses.image : ""}
                       alt="course image"
                     />
                   </div>
                   <p className=" flex-1 text-[#020617] text-[16px] font-[400] leading-[150%] line-clamp-2">
-                    {item.courses?.title}
+                    {item?.courses?.title}
                   </p>
-                  {item.courses?.price > 0 ? (
+                  {item?.courses?.price > 0 ? (
                     <span className="text-black text-[18px] font-[600] leading-[120%]">
-                      {`$${item.courses?.price}`}
+                      {`$${item?.courses?.price}`}
                     </span>
                   ) : (
                     <span className="text-green-500 text-[18px] font-[600] leading-[120%]">
@@ -87,10 +103,11 @@ export default function Cart() {
                     </ActionIcon>
                   </div>
                 </div>
-              ))}
+              ))) ||
+              ""}
 
             <div className="flex justify-between py-2 items-center">
-              <span>{cart?.length} Course in Cart</span>
+              <span>{cart?.length || "0"} Course in Cart</span>
               <Link href="/cart">
                 <Button variant="fill" size="sm" className="ml-auto">
                   View Cart

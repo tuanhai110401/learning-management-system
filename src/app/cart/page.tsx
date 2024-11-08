@@ -1,19 +1,27 @@
 "use client";
-import { Button, Container, Divider, Rating } from "@mantine/core";
+import { Button, Container, Divider, Rating, Skeleton } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useAuthStore, useCart } from "@/lib/store";
 import CartItem from "./CartItem";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 export default function Cart() {
   const [totalPrice, setTotalPrice] = useState<any>({});
-  const { userId } = useAuthStore();
+  const { userId, isLogin } = useAuthStore();
   const { isLoading, cart, error, addCart, removeCart, fetchCart } = useCart();
+  const router = useRouter();
   useEffect(() => {
-    if (!userId && cart.length === 0) return;
+    if (userId && cart.length > 0) {
+      return;
+    }
     fetchCart(userId);
     console.log(">>is running");
   }, [userId]);
 
   useEffect(() => {
+    if (!userId && cart.length === 0) {
+      return;
+    }
     const total = calculateTotalPrice(cart);
     setTotalPrice(total);
   }, [cart]);
@@ -44,9 +52,37 @@ export default function Cart() {
               1 Course in cart
             </h5>
             <Divider className="mb-4" />
-            {cart.length === 0 && (
+
+            {isLoading === true && (
+              <div className="flex-1 mb-4 shadow-custom flex gap-3 p-4">
+                <Skeleton height={108} width={192} radius={8} />
+                <div>
+                  <Skeleton height={28} width={240} radius={8} />
+                  <Skeleton
+                    height={18}
+                    width={240}
+                    radius={8}
+                    className="my-6"
+                  />
+                  <Skeleton height={18} width={240} radius={8} />
+                </div>
+              </div>
+            )}
+            {isLoading === false && cart && cart.length === 0 && (
               <div>
-                <h1>Your cart is empty. Add some items to get started!</h1>
+                {userId ? (
+                  <h1>Your cart is empty. Add some items to get started!</h1>
+                ) : (
+                  <h4>
+                    You must be logged in to access your cart. Click here to{" "}
+                    <span
+                      onClick={() => router.push("/login")}
+                      className="text-blue-600 cursor-pointer py-2 hover:underline"
+                    >
+                      Log in.
+                    </span>
+                  </h4>
+                )}
               </div>
             )}
             {isLoading === false &&
@@ -72,7 +108,7 @@ export default function Cart() {
                   Price
                 </span>
                 <span className="text-[#0F172A] text-[18px] font-[600] leading-[160%]">
-                  ${totalPrice.totalCoursePrice}
+                  ${totalPrice?.totalCoursePrice || "0"}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -90,9 +126,9 @@ export default function Cart() {
                 <span className="text-[#0F172A] text-[18px] font-[600] leading-[160%]">
                   - $
                   {(
-                    totalPrice.totalCoursePrice *
-                    (totalPrice.tax / 100)
-                  ).toFixed(2)}
+                    totalPrice?.totalCoursePrice *
+                    (totalPrice?.tax / 100)
+                  ).toFixed(2) || "0"}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -100,17 +136,26 @@ export default function Cart() {
                   Total
                 </span>
                 <span className="text-[#0F172A] text-[18px] font-[600] leading-[160%]">
-                  {totalPrice.totalCoursePrice
+                  {totalPrice?.totalCoursePrice
                     ? `$${(
-                        totalPrice.totalCoursePrice -
-                        totalPrice.totalCoursePrice * (totalPrice.tax / 100)
+                        totalPrice?.totalCoursePrice -
+                        totalPrice?.totalCoursePrice * (totalPrice?.tax / 100)
                       ).toFixed(2)}`
                     : "$0"}
                 </span>
               </div>
             </div>
-            <Button fullWidth color="black" className="mt-4">
-              Proceed to Checkout
+            <Button
+              fullWidth
+              color="black"
+              className="mt-4"
+              disabled={!isLogin}
+            >
+              {isLogin ? (
+                <Link href="/checkout">Proceed to Checkout</Link>
+              ) : (
+                "Proceed to Checkout"
+              )}
             </Button>
           </div>
         </div>

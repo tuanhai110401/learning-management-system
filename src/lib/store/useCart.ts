@@ -5,6 +5,9 @@ export const useCart = create<any>((set) => ({
     isLoading: false,
     cart: [],
     error: null,
+    setCart: (cart: any) => {
+        set({ cart: cart })
+    },
     fetchCart: async (userId: string) => {
         set({ isLoading: true });
         try {
